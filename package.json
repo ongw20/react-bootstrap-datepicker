@@ -1,0 +1,55 @@
+{
+  "name": "react-bootstrap-datepicker",
+  "version": "0.1.0",
+  "description": "Date picker for react bootstrap.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "storybook": "start-storybook -p 3000",
+    "storybook:export": "build-storybook",
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ongw20/react-bootstrap-datepicker.git"
+  },
+  "keywords": [
+    "datepicker",
+    "date picker",
+    "react",
+    "bootstrap"
+  ],
+  "author": "ongw20@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ongw20/react-bootstrap-datepicker/issues"
+  },
+  "homepage": "https://github.com/ongw20/react-bootstrap-datepicker#readme",
+  "peerDependencies": {
+    "bootstrap": "^4.5.0",
+    "moment": "^2.27.0",
+    "react": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@storybook/react": "^5.3.19",
+    "@types/moment": "^2.13.0",
+    "@types/react": "^16.9.43",
+    "babel-loader": "^8.1.0",
+    "babel-preset-react-app": "^9.1.2",
+    "node-sass": "^4.14.1",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.21.0",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
+    "rollup-plugin-postcss": "^3.1.3",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "sass-loader": "^9.0.2",
+    "typescript": "^3.9.6"
+  }
+}
