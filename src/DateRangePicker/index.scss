@@ -1,0 +1,33 @@
+.rb-date-range-picker-container {
+  display: inline-block;
+  user-select: none;
+
+  .form-control.form-control-sm {
+    width: 113px;
+  }
+
+  .form-group {
+    position: relative;
+  }
+
+  .rb-current::before {
+    position: absolute;
+    bottom: 2px;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background-color: #357ebd;
+    content: '';
+  }
+
+  .rb-date-range-picker-separator {
+    margin: 0 7px;
+  }
+
+  .rb-date-range-picker {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+}
