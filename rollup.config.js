@@ -21,7 +21,7 @@ export default {
   ],
   plugins: [
     peerDepsExternalPlugin(),
-    typescriptPlugin({ useTsconfigDeclarationDir: true }),
+    typescriptPlugin(),
     terser(),
     postcssPlugin(),
   ],
