@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   createRef,
+  MutableRefObject,
 } from 'react'
 import { Locale, format, isBefore, isAfter } from 'date-fns'
 import SingleDateRangePickerCalendar, {
@@ -18,41 +19,44 @@ export type ChangeDateRange = (dates: {
   endDate: number
 }) => void
 
+export type DateRangeFnsRef = MutableRefObject<{
+  clear: () => void
+}>
+
 export { IsValidDateRange }
 
 type Props = {
-  startDate?: number
-  endDate?: number
+  initialStartDate?: number
+  initialEndDate?: number
   minDate?: number
   maxDate?: number
   locale: Locale
   pattern: string
   calendarMonthPattern: string
   onChangeDateRange: ChangeDateRange
+  dateRangeFnsRef?: DateRangeFnsRef
   isValidDateRange?: IsValidDateRange
 }
 
 const SingleDateRangePickerContent: FC<Props> = ({
-  startDate: startDateProp,
-  endDate: endDateProp,
+  initialStartDate,
+  initialEndDate,
   minDate,
   maxDate,
   locale,
   pattern,
   calendarMonthPattern,
   onChangeDateRange: changeDateRange,
+  dateRangeFnsRef,
   isValidDateRange,
 }) => {
-  const startDateRef = useRef<number>()
-  const endDateRef = useRef<number>()
+  const startDateRef = useRef<number | undefined>(initialStartDate)
+  const endDateRef = useRef<number | undefined>(initialEndDate)
 
-  const [startDate, setStartDate] = useState<number>()
-  const [endDate, setEndDate] = useState<number>()
-
-  useEffect(() => {
-    setStartDate((startDateRef.current = startDateProp))
-    setEndDate((endDateRef.current = endDateProp))
-  }, [startDateProp, endDateProp])
+  const [startDate, setStartDate] = useState<number | undefined>(
+    initialStartDate
+  )
+  const [endDate, setEndDate] = useState<number | undefined>(initialEndDate)
 
   const [show, setShow] = useState<boolean>(false)
   const [selectingDate, setSelectingDate] = useState<'start' | 'end' | 'none'>(
@@ -66,11 +70,22 @@ const SingleDateRangePickerContent: FC<Props> = ({
   const endDateInputRef = createRef<HTMLInputElement>()
 
   useEffect(() => {
-    if (!show && (!startDate || !endDate)) {
+    if (dateRangeFnsRef) {
+      dateRangeFnsRef.current = {
+        clear: () => {
+          setStartDate((startDateRef.current = undefined))
+          setEndDate((endDateRef.current = undefined))
+        },
+      }
+    }
+  }, [dateRangeFnsRef])
+
+  useEffect(() => {
+    if (!show) {
       setStartDate(startDateRef.current)
       setEndDate(endDateRef.current)
     }
-  }, [show, startDate, endDate])
+  }, [show])
 
   const close = useCallback(() => {
     setSelectingDate('none')
@@ -119,8 +134,8 @@ const SingleDateRangePickerContent: FC<Props> = ({
     endDate: selectedEndDate,
   }) => {
     if (selectedStartDate && selectedEndDate) {
-      setStartDate((startDateRef.current = selectedStartDate))
-      setEndDate((endDateRef.current = selectedEndDate))
+      startDateRef.current = selectedStartDate
+      endDateRef.current = selectedEndDate
       close()
       changeDateRange({
         startDate: selectedStartDate,

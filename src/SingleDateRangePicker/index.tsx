@@ -3,47 +3,50 @@ import { Locale } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import SingleDateRangePickerContent, {
   ChangeDateRange,
+  DateRangeFnsRef,
   IsValidDateRange,
 } from './SingleDateRangePickerContent'
 
-export { ChangeDateRange, IsValidDateRange }
+export { ChangeDateRange, DateRangeFnsRef, IsValidDateRange }
 
 type Props = {
-  startDate?: string | Date
-  endDate?: string | Date
+  initialStartDate?: string | Date
+  initialEndDate?: string | Date
   minDate?: string | Date
   maxDate?: string | Date
   locale?: Locale
   pattern?: string
   calendarMonthPattern?: 'MMM yyyy' | 'yyyy MMM'
   onChangeDateRange: ChangeDateRange
+  dateRangeFnsRef?: DateRangeFnsRef
   isValidDateRange?: IsValidDateRange
 }
 
 const SingleDateRangePicker: FC<Props> = ({
-  startDate: startDateProp,
-  endDate: endDateProp,
+  initialStartDate,
+  initialEndDate,
   minDate: minDateProp,
   maxDate: maxDateProp,
   locale,
   pattern,
   calendarMonthPattern,
   onChangeDateRange: changeDateRange,
+  dateRangeFnsRef,
   isValidDateRange,
 }) => {
   const startDate =
-    startDateProp instanceof Date
-      ? startDateProp.getTime()
-      : typeof startDateProp === 'string'
-      ? new Date(startDateProp).getTime()
-      : startDateProp
+    initialStartDate instanceof Date
+      ? initialStartDate.getTime()
+      : typeof initialStartDate === 'string'
+      ? new Date(initialStartDate).getTime()
+      : initialStartDate
 
   const endDate =
-    endDateProp instanceof Date
-      ? endDateProp.getTime()
-      : typeof endDateProp === 'string'
-      ? new Date(endDateProp).getTime()
-      : endDateProp
+    initialEndDate instanceof Date
+      ? initialEndDate.getTime()
+      : typeof initialEndDate === 'string'
+      ? new Date(initialEndDate).getTime()
+      : initialEndDate
 
   const minDate =
     minDateProp instanceof Date
@@ -61,14 +64,15 @@ const SingleDateRangePicker: FC<Props> = ({
 
   return (
     <SingleDateRangePickerContent
-      startDate={startDate}
-      endDate={endDate}
+      initialStartDate={startDate}
+      initialEndDate={endDate}
       minDate={minDate}
       maxDate={maxDate}
       locale={locale || enUS}
-      pattern={pattern || 'yyyy-MM-dd'}
+      pattern={pattern || 'PP'}
       calendarMonthPattern={calendarMonthPattern || 'MMM yyyy'}
       onChangeDateRange={changeDateRange}
+      dateRangeFnsRef={dateRangeFnsRef}
       isValidDateRange={isValidDateRange}
     />
   )
