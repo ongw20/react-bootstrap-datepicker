@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "storybook": "start-storybook -p 3000",
-    "storybook:export": "build-storybook",
+    "storybook:export": "build-storybook -o docs",
     "clean": "rimraf ./dist",
     "build": "npm run clean && rollup -c"
   },

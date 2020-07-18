@@ -1,7 +1,5 @@
-const path = require('path')
-
 module.exports = {
-  stories: ['./**/*.stories.tsx'],
+  stories: ['../stories/**/*.stories.tsx'],
   webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.scss$/,
@@ -11,12 +9,19 @@ module.exports = {
       test: /\.(ts|tsx)$/,
       use: [
         {
-          loader: require.resolve('babel-loader'),
+          loader: 'babel-loader',
           options: {
             presets: [['react-app']],
           },
         },
-        require.resolve('ts-loader'),
+        {
+          loader: 'ts-loader',
+          options: {
+            compilerOptions: {
+              declaration: false,
+            },
+          },
+        },
       ],
     })
     config.resolve.extensions.push('.ts', '.tsx')
