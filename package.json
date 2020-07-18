@@ -31,13 +31,12 @@
   "homepage": "https://github.com/ongw20/react-bootstrap-datepicker#readme",
   "peerDependencies": {
     "bootstrap": "^4.5.0",
-    "moment": "^2.27.0",
+    "date-fns": "^2.14.0",
     "react": "^16.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@storybook/react": "^5.3.19",
-    "@types/moment": "^2.13.0",
     "@types/react": "^16.9.43",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
@@ -50,6 +49,7 @@
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "sass-loader": "^9.0.2",
+    "ts-loader": "^8.0.1",
     "typescript": "^3.9.6"
   }
 }

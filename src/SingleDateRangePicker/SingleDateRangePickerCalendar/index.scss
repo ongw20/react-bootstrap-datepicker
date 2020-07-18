@@ -1,44 +1,46 @@
 $border-radius: 4px;
 
-.rb-date-picker-panel-container {
+.rb-single-date-range-picker-calendar {
   padding: 5px 12px;
   font-size: 12px;
-  .rb-date-picker-panel {
+  .table {
     margin: 0;
-    th, td {
+    th.rb-prev-month,
+    th.rb-next-month,
+    td {
+      cursor: pointer;
+    }
+    th,
+    td {
       position: relative;
       text-align: center;
       padding: 5px;
       border-radius: $border-radius;
       width: 32px;
       line-height: 24px;
-      &.disabled {
+      &.rb-disabled {
         color: #999;
         cursor: not-allowed;
       }
     }
-    th {
-      &.prev, &.next {
-        cursor: pointer;
-      }
-    }
     td {
-      cursor: pointer;
-      &.prev, &.next {
+      &.rb-disabled {
+        text-decoration: line-through;
+      }
+      &.rb-prev,
+      &.rb-next {
         color: #999;
       }
-      &.disabled {
-        text-decoration: line-through
-      }
-      &.in-range:not(.out-month), &.hover-in-range:not(.out-month) {
+      &.rb-in-range:not(.rb-off-month),
+      &.rb-hover-in-range:not(.rb-off-month) {
         background-color: #ebf4f8;
         border-radius: 0;
       }
-      &.in-range.hover-in-range:not(.out-month) {
+      &.rb-in-range.rb-hover-in-range:not(.rb-off-month) {
         background-color: #afd9ee;
         border-radius: 0;
       }
-      &.today::before {
+      &.rb-today::before {
         border-radius: $border-radius;
         position: absolute;
         top: 0;
@@ -49,19 +51,20 @@ $border-radius: 4px;
         content: '';
         border: 1px solid #357ebd;
       }
-      &:hover,
-      &.in-range:hover {
+      &:hover {
         background-color: #ddd;
       }
-      &.start-date:not(.out-month), &.end-date:not(.out-month), &.start-date.end-date:not(.out-month) {
+      &.rb-start-date:not(.rb-off-month),
+      &.rb-end-date:not(.rb-off-month),
+      &.rb-start-date.rb-end-date:not(.rb-off-month) {
         color: #fff;
         background-color: #357ebd;
         border-radius: $border-radius;
       }
-      &.start-date:not(.out-month) {
+      &.rb-start-date:not(.rb-off-month) {
         border-radius: $border-radius 0 0 $border-radius;
       }
-      &.end-date:not(.out-month) {
+      &.rb-end-date:not(.rb-off-month) {
         border-radius: 0 $border-radius $border-radius 0;
       }
     }

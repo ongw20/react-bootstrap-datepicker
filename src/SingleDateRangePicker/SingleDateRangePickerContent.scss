@@ -1,4 +1,4 @@
-.rb-date-range-picker-container {
+.rb-single-date-range-picker-content {
   display: inline-block;
   user-select: none;
 
@@ -10,7 +10,7 @@
     position: relative;
   }
 
-  .rb-current::before {
+  .rb-active::before {
     position: absolute;
     bottom: 2px;
     left: 8px;
@@ -24,7 +24,7 @@
     margin: 0 7px;
   }
 
-  .rb-date-range-picker {
+  .rb-single-date-range-picker-panel {
     position: absolute;
     background-color: #fff;
     border: 1px solid #ddd;
