@@ -3,78 +3,59 @@ import { Locale } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import SingleDateRangePickerContent, {
   ChangeDateRange,
-  DateRangeFnsRef,
   IsValidDateRange,
 } from './SingleDateRangePickerContent'
 
-export { ChangeDateRange, DateRangeFnsRef, IsValidDateRange }
+export { ChangeDateRange, IsValidDateRange }
 
 type Props = {
-  initialStartDate?: string | Date
-  initialEndDate?: string | Date
-  minDate?: string | Date
-  maxDate?: string | Date
+  startDate?: string | number | Date
+  endDate?: string | number | Date
+  minDate?: string | number | Date
+  maxDate?: string | number | Date
   locale?: Locale
   pattern?: string
   calendarMonthPattern?: 'MMM yyyy' | 'yyyy MMM'
   onChangeDateRange: ChangeDateRange
-  dateRangeFnsRef?: DateRangeFnsRef
   isValidDateRange?: IsValidDateRange
 }
 
 const SingleDateRangePicker: FC<Props> = ({
-  initialStartDate,
-  initialEndDate,
+  startDate: startDateProp,
+  endDate: endDateProp,
   minDate: minDateProp,
   maxDate: maxDateProp,
   locale,
   pattern,
   calendarMonthPattern,
   onChangeDateRange: changeDateRange,
-  dateRangeFnsRef,
   isValidDateRange,
+  children,
 }) => {
-  const startDate =
-    initialStartDate instanceof Date
-      ? initialStartDate.getTime()
-      : typeof initialStartDate === 'string'
-      ? new Date(initialStartDate).getTime()
-      : initialStartDate
+  const startDate = startDateProp
+    ? new Date(startDateProp).getTime()
+    : undefined
 
-  const endDate =
-    initialEndDate instanceof Date
-      ? initialEndDate.getTime()
-      : typeof initialEndDate === 'string'
-      ? new Date(initialEndDate).getTime()
-      : initialEndDate
+  const endDate = endDateProp ? new Date(endDateProp).getTime() : undefined
 
-  const minDate =
-    minDateProp instanceof Date
-      ? minDateProp.getTime()
-      : typeof minDateProp === 'string'
-      ? new Date(minDateProp).getTime()
-      : minDateProp
+  const minDate = minDateProp ? new Date(minDateProp).getTime() : undefined
 
-  const maxDate =
-    maxDateProp instanceof Date
-      ? maxDateProp.getTime()
-      : typeof maxDateProp === 'string'
-      ? new Date(maxDateProp).getTime()
-      : maxDateProp
+  const maxDate = maxDateProp ? new Date(maxDateProp).getTime() : undefined
 
   return (
     <SingleDateRangePickerContent
-      initialStartDate={startDate}
-      initialEndDate={endDate}
+      startDate={startDate}
+      endDate={endDate}
       minDate={minDate}
       maxDate={maxDate}
       locale={locale || enUS}
       pattern={pattern || 'PP'}
       calendarMonthPattern={calendarMonthPattern || 'MMM yyyy'}
       onChangeDateRange={changeDateRange}
-      dateRangeFnsRef={dateRangeFnsRef}
       isValidDateRange={isValidDateRange}
-    />
+    >
+      {children}
+    </SingleDateRangePickerContent>
   )
 }
 

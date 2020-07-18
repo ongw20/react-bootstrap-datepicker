@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useEffect,
   createRef,
-  MutableRefObject,
 } from 'react'
 import { Locale, format, isBefore, isAfter } from 'date-fns'
 import SingleDateRangePickerCalendar, {
@@ -15,48 +14,45 @@ import SingleDateRangePickerCalendar, {
 import './SingleDateRangePickerContent.scss'
 
 export type ChangeDateRange = (dates: {
-  startDate: number
-  endDate: number
+  startDate?: number
+  endDate?: number
 }) => void
-
-export type DateRangeFnsRef = MutableRefObject<{
-  clear: () => void
-}>
 
 export { IsValidDateRange }
 
 type Props = {
-  initialStartDate?: number
-  initialEndDate?: number
+  startDate?: number
+  endDate?: number
   minDate?: number
   maxDate?: number
   locale: Locale
   pattern: string
   calendarMonthPattern: string
   onChangeDateRange: ChangeDateRange
-  dateRangeFnsRef?: DateRangeFnsRef
   isValidDateRange?: IsValidDateRange
 }
 
 const SingleDateRangePickerContent: FC<Props> = ({
-  initialStartDate,
-  initialEndDate,
+  startDate,
+  endDate,
   minDate,
   maxDate,
   locale,
   pattern,
   calendarMonthPattern,
   onChangeDateRange: changeDateRange,
-  dateRangeFnsRef,
   isValidDateRange,
+  children,
 }) => {
-  const startDateRef = useRef<number | undefined>(initialStartDate)
-  const endDateRef = useRef<number | undefined>(initialEndDate)
+  const startDateRef = useRef<number | undefined>(startDate)
+  const endDateRef = useRef<number | undefined>(endDate)
 
-  const [startDate, setStartDate] = useState<number | undefined>(
-    initialStartDate
-  )
-  const [endDate, setEndDate] = useState<number | undefined>(initialEndDate)
+  useEffect(() => {
+    if ((startDate && endDate) || (!startDate && !endDate)) {
+      startDateRef.current = startDate
+      endDateRef.current = endDate
+    }
+  }, [startDate, endDate])
 
   const [show, setShow] = useState<boolean>(false)
   const [selectingDate, setSelectingDate] = useState<'start' | 'end' | 'none'>(
@@ -70,22 +66,13 @@ const SingleDateRangePickerContent: FC<Props> = ({
   const endDateInputRef = createRef<HTMLInputElement>()
 
   useEffect(() => {
-    if (dateRangeFnsRef) {
-      dateRangeFnsRef.current = {
-        clear: () => {
-          setStartDate((startDateRef.current = undefined))
-          setEndDate((endDateRef.current = undefined))
-        },
-      }
+    if (!show && ((startDate && !endDate) || (!startDate && endDate))) {
+      changeDateRange({
+        startDate: startDateRef.current,
+        endDate: endDateRef.current,
+      })
     }
-  }, [dateRangeFnsRef])
-
-  useEffect(() => {
-    if (!show) {
-      setStartDate(startDateRef.current)
-      setEndDate(endDateRef.current)
-    }
-  }, [show])
+  }, [show, startDate, endDate, changeDateRange])
 
   const close = useCallback(() => {
     setSelectingDate('none')
@@ -134,13 +121,11 @@ const SingleDateRangePickerContent: FC<Props> = ({
     endDate: selectedEndDate,
   }) => {
     if (selectedStartDate && selectedEndDate) {
-      startDateRef.current = selectedStartDate
-      endDateRef.current = selectedEndDate
-      close()
       changeDateRange({
         startDate: selectedStartDate,
         endDate: selectedEndDate,
       })
+      close()
       return
     } else if (!selectedStartDate) {
       setSelectingDate('start')
@@ -149,8 +134,10 @@ const SingleDateRangePickerContent: FC<Props> = ({
       setSelectingDate('end')
       endDateInputRef.current?.focus()
     }
-    setStartDate(selectedStartDate)
-    setEndDate(selectedEndDate)
+    changeDateRange({
+      startDate: selectedStartDate,
+      endDate: selectedEndDate,
+    })
   }
 
   const handleChangeInput = () => undefined
@@ -194,6 +181,7 @@ const SingleDateRangePickerContent: FC<Props> = ({
             autoComplete="off"
           />
         </div>
+        {children}
       </div>
       {show && calendarMonth ? (
         <div className="rb-single-date-range-picker-panel">
