@@ -5,15 +5,28 @@ import { SingleDateRangePicker, ChangeSingleDateRange } from '../src'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const DateRangePickerBasic = () => {
+  const [dateOptions, setDateOptions] = useState({
+    startDate: undefined,
+    endDate: undefined,
+  })
+
   const handleChangeDateRange: ChangeSingleDateRange = ({
     startDate,
     endDate,
   }) => {
-    console.log(`start - ${format(startDate, 'PP')}`)
-    console.log(`end - ${format(endDate, 'PP')}`)
+    setDateOptions({
+      startDate,
+      endDate,
+    })
+    if (startDate && endDate) {
+      console.log(`start - ${format(startDate, 'PP')}`)
+      console.log(`end - ${format(endDate, 'PP')}`)
+    }
   }
   return (
     <SingleDateRangePicker
+      startDate={dateOptions.startDate}
+      endDate={dateOptions.endDate}
       locale={zhCN}
       calendarMonthPattern="yyyy MMM"
       onChangeDateRange={handleChangeDateRange}
