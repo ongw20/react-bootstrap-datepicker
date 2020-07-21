@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useEffect } from 'react'
+import React, { FC, useState, useMemo } from 'react'
 import {
   isSameMonth,
   isBefore,
@@ -61,7 +61,6 @@ const SingleDateRangePickerCalendar: FC<Props> = ({
   onChangeDate: changeDate,
   isValidDateRange,
 }) => {
-  const [calendar, setCalendar] = useState<CalendarDay[][]>()
   const [hoverDate, setHoverDate] = useState<number>()
 
   const prevDisabled = useMemo(
@@ -76,8 +75,8 @@ const SingleDateRangePickerCalendar: FC<Props> = ({
       (isSameMonth(month, maxDate) || isAfter(month, endOfMonth(maxDate))),
     [month, maxDate]
   )
-  useEffect(() => {
-    setCalendar(
+  const calendar = useMemo(
+    () =>
       genDateRangeCalendar(month, {
         startDate,
         endDate,
@@ -86,18 +85,18 @@ const SingleDateRangePickerCalendar: FC<Props> = ({
         selectingDate,
         hoverDate,
         locale,
-      })
-    )
-  }, [
-    month,
-    startDate,
-    endDate,
-    minDate,
-    maxDate,
-    selectingDate,
-    hoverDate,
-    locale,
-  ])
+      }),
+    [
+      month,
+      startDate,
+      endDate,
+      minDate,
+      maxDate,
+      selectingDate,
+      hoverDate,
+      locale,
+    ]
+  )
 
   const handleSelectDate = ({ status, date }: CalendarDay) => {
     if (status.includes(DateStatus.DISABLED)) return
@@ -189,7 +188,7 @@ const SingleDateRangePickerCalendar: FC<Props> = ({
     return dayValues
   }
 
-  return calendar ? (
+  return (
     <div className="rb-single-date-range-picker-calendar">
       <table className="table table-borderless">
         <thead>
@@ -235,7 +234,7 @@ const SingleDateRangePickerCalendar: FC<Props> = ({
         </tbody>
       </table>
     </div>
-  ) : null
+  )
 }
 
 export default SingleDateRangePickerCalendar

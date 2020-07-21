@@ -44,15 +44,13 @@ const SingleDateRangePickerContent: FC<Props> = ({
   isValidDateRange,
   children,
 }) => {
-  const startDateRef = useRef<number | undefined>(startDate)
-  const endDateRef = useRef<number | undefined>(endDate)
+  const startDateRef = useRef<number>()
+  const endDateRef = useRef<number>()
 
-  useEffect(() => {
-    if ((startDate && endDate) || (!startDate && !endDate)) {
-      startDateRef.current = startDate
-      endDateRef.current = endDate
-    }
-  }, [startDate, endDate])
+  if ((startDate && endDate) || (!startDate && !endDate)) {
+    startDateRef.current = startDate
+    endDateRef.current = endDate
+  }
 
   const [show, setShow] = useState<boolean>(false)
   const [selectingDate, setSelectingDate] = useState<'start' | 'end' | 'none'>(
