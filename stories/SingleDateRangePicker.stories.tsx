@@ -1,8 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState } from 'react'
 import { subDays, addDays, subMonths, addMonths, format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import { SingleDateRangePicker, ChangeSingleDateRange } from '../src'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const DateRangePickerBasic = () => {
   const [dateOptions, setDateOptions] = useState({
